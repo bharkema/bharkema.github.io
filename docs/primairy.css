@@ -50,13 +50,45 @@ header img {
     height: 200px;
     overflow: hidden;
     object-fit: cover;
+}
+
+.container{
+    width:900px;
+    height:400px;
+    background-color:#fff;
+    display:grid;
+    grid-template-columns: 900px 200px;
+    grid-row: auto auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+.textblok{
+    background-color:#333;
+    padding:0px;
+    width: 900px;
+    border-radius:0px;
+    color:#fff;
+    display:flex;
+    font-size:40px;
+    font-family:sans-serif;
 
 }
 
-.main-body{
-
+.imageblok{
+    background-color:#333;
+    padding:20px;
+    width: 900px;
+    border-radius:10px;
+    color:rgb(255, 0, 0);
+    display:flex;
+    font-size:40px;
+    font-family:sans-serif;
 }
 
-.footer{
+
+.image{
+    max-width: 500px;
+    max-height: 500px;
 
 }
