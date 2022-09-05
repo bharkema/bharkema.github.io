@@ -37,58 +37,78 @@ body {
     font-family: "Galyon Regular";
 }
 
-header { 
-	background: url("https://github.com/bharkema/bharkema.github.io/blob/main/docs/Assets/header.jpg") no-repeat;
-    padding-bottom: 150px;
+.header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 400px;
+    background-image: url("https://www.singlestore.com/images/cms/blog-posts/img_blog_post_featured_oreilly-ai-book.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-header img {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 100%;
-    height: 200px;
-    overflow: hidden;
-    object-fit: cover;
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(23, 23, 176);
+    opacity: 0.3;
+  }
+
+  .header-section {
+    position: relative;
+    padding: 15% 0 15%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-family: "Galyon Regular";
+  }
+
+.title{
+    position: relative;
+    left: 100px;
+    top: -100px;
 }
 
-.container{
-    width:900px;
-    height:400px;
-    background-color:#fff;
-    display:grid;
-    grid-template-columns: 900px 200px;
-    grid-row: auto auto;
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
-}
+.section-wrap {
+    padding-top: 400px;
+    background-color: white;
+    align-content: center;
+}  
 
-.textblok{
-    background-color:#333;
-    padding:0px;
-    width: 900px;
-    border-radius:0px;
-    color:#fff;
-    display:flex;
-    font-size:40px;
-    font-family:sans-serif;
+.section {
+    position: relative;
+    max-width: 840px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px;
+  }
 
-}
-
-.imageblok{
-    background-color:#333;
-    padding:20px;
-    width: 900px;
-    border-radius:10px;
-    color:rgb(255, 0, 0);
-    display:flex;
-    font-size:40px;
-    font-family:sans-serif;
+.button {
+    height: 26px;
+    width: 125px;
+    flex: 0 0 80px;
+    border: none;
+    outline: 0;
+    margin-top: 10px;
+    color: white;
+    background-color: #DB9D47;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
 }
 
 
 .image{
-    max-width: 500px;
-    max-height: 500px;
-
+    justify-content: center;
+    max-width: 900px;
+    max-height: 900px;
 }
