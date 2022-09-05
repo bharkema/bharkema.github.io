@@ -1,3 +1,18 @@
-# bharkema.github.io
+# Documentation Clappform Systems
 
-HALLO
+
+## App development online
+
+## Query system
+
+## Actionflow development
+
+## Form template
+
+## Visualization
+
+### Actions
+
+## Users rolls and rights
+
+## Pypi package
