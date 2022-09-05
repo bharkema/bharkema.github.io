@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Clappform Documentation</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="primairy.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-section">
+                <h1 class="title">Query Documentation</h1>
+            </div>
+        </div>
+
+        <div class="section-wrap">
+            <div class="section">    
+            <h1 id="query">Query</h1>
+            
+            <p>The query editor is meant to create a pipeline that transforms data at the latest possible stage before presentation. This means it is intended for selecting only the data necessary for creating a widget. Some types have the query disabled as the widget doesn’t need any input data. Only the developer needs rights to certain data in order to put it in the pipeline. The data will not be user specific and therefore not adhere to any set permissions.</p>
+            
+            <h1 id="pipeline">Pipeline</h1>
+            
+            <p>The top layer of the query editor consists of the stages together forming the pipeline. These stages can be used in any quantity and order, but caution is advised for the sake of time-to-live of the widget. At the start of the pipeline the data will be passed down of the collection selected in the form. The data for the last stage will be passed down to the widget and can then be configured in the widget configuration. The last stage will always be limited to 100 items maximum to guarantee performance. The stages can have multiple different types:</p>
+            
+            <ul>
+              <li><a href="#add-field"><code class="language-plaintext highlighter-rouge">add field</code></a></li>
+              <li><a href="#array-to-object"><code class="language-plaintext highlighter-rouge">array to object</code></a></li>
+              <li><a href="#bucket"><code class="language-plaintext highlighter-rouge">bucket</code></a></li>
+              <li><a href="#bucket-auto"><code class="language-plaintext highlighter-rouge">bucket auto</code></a></li>
+              <li><a href="#calculation"><code class="language-plaintext highlighter-rouge">calculation</code></a></li>
+              <li><a href="#convert"><code class="language-plaintext highlighter-rouge">convert</code></a></li>
+              <li><a href="#filters"><code class="language-plaintext highlighter-rouge">filters</code></a></li>
+              <li><a href="#first-from-array"><code class="language-plaintext highlighter-rouge">first from array</code></a></li>
+              <li><a href="#group"><code class="language-plaintext highlighter-rouge">group</code></a></li>
+              <li><a href="#hide"><code class="language-plaintext highlighter-rouge">hide</code></a></li>
+              <li><a href="#kpis"><code class="language-plaintext highlighter-rouge">kpis</code></a></li>
+              <li><a href="#left-join"><code class="language-plaintext highlighter-rouge">left join</code></a></li>
+              <li><a href="#limit"><code class="language-plaintext highlighter-rouge">limit</code></a></li>
+              <li><a href="#nested-to-string"><code class="language-plaintext highlighter-rouge">nested to string</code></a></li>
+              <li><a href="#order"><code class="language-plaintext highlighter-rouge">order</code></a></li>
+              <li><a href="#rename"><code class="language-plaintext highlighter-rouge">rename</code></a></li>
+              <li><a href="#show"><code class="language-plaintext highlighter-rouge">show</code></a></li>
+              <li><a href="#to-date"><code class="language-plaintext highlighter-rouge">to Date</code></a></li>
+              <li><a href="#to-epoch"><code class="language-plaintext highlighter-rouge">to Epoch</code></a></li>
+              <li><a href="#union-with"><code class="language-plaintext highlighter-rouge">union with</code></a></li>
+              <li><a href="#unwind"><code class="language-plaintext highlighter-rouge">unwind</code></a></li>
+            </ul>
+            
+            <p>A full example could be</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"regio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                      </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eq"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nederland"</span><span class="w">
+                      </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filters"</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"steps"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"periode"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"how"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DESC"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"limit"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h1 id="values">Values</h1>
+            
+            <p>If a value needs to be added to the query one may use the following types: string (text), number or value from a key. Text needs to be surrounded by double quotes and to select the value from a key the name needs to be proceeded by a $ sign. For example <code class="language-plaintext highlighter-rouge">"value": "$price"</code>.</p>
+            
+            <h1 id="global-values">Global Values</h1>
+            
+            <p>At this time of writing there are several global variables that can be used in the query builder. <code class="language-plaintext highlighter-rouge">"$USER"</code> will be replaced with the id of the user in the database. This way you can make dashboards user-specific. <code class="language-plaintext highlighter-rouge">"$DEEP_DIVE"</code> provide access to the values of a chart when you click on this specific chart. the key will be replaced with the actual value. For exmaple if the chart contains information regarding an address and you want to use this key value use: <code class="language-plaintext highlighter-rouge">"$DEEP_DIVE.address"</code>. The last global varaible is the <code class="language-plaintext highlighter-rouge">"$ID"</code>, using this the id in the url will be extracted and replaced in the database with this value.</p>
+            
+            <h1 id="stage-types">Stage types</h1>
+            
+            <h2 id="add-field"><a href="#pipeline"><strong>Add field</strong></a></h2>
+            
+            <p>Adds new fields to object.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object(Where the key is the new name and the value is value you want to add )</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addField"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"new"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="array-to-object"><a href="#pipeline"><strong>Array to object</strong></a></h2>
+            
+            <p>Converts an array into a single document;</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object(Where the key is the new name and the value is the old name)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-1">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arrayToObject"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"new"</span><span class="p">:</span><span class="w"> </span><span class="s2">"old"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="bucket"><a href="#pipeline"><strong>Bucket</strong></a></h2>
+            
+            <p>Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries and outputs a document per each bucket. Each output document contains an <code class="language-plaintext highlighter-rouge">_id</code> field whose value specifies the inclusive lower bound of the bucket. The output option specifies the fields included in each output document.</p>
+            
+            <p>Bucket only produces output documents for buckets that contain at least one input document.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>groupBy</td>
+                  <td>Text</td>
+                  <td>An expression to group documents by.</td>
+                </tr>
+                <tr>
+                  <td>boundaries</td>
+                  <td>Array</td>
+                  <td>An array of values based on the groupBy expression that specify the boundaries for each bucket.</td>
+                </tr>
+                <tr>
+                  <td>default</td>
+                  <td>Text</td>
+                  <td>Optional. A literal that specifies the <code class="language-plaintext highlighter-rouge">_id</code> of an additional bucket that contains all documents whose groupBy expression result does not fall into a bucket specified by boundaries.</td>
+                </tr>
+                <tr>
+                  <td>output</td>
+                  <td>Object</td>
+                  <td>Optional. A document that specifies the fields to include in the output documents in addition to the <code class="language-plaintext highlighter-rouge">_id</code> field.</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>For example, a boundries array of <code class="language-plaintext highlighter-rouge">[ 0, 5, 10 ]</code> creates two buckets:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">[0, 5]</code> with inclusive lower bound <code class="language-plaintext highlighter-rouge">0</code> and exclusive upper bound <code class="language-plaintext highlighter-rouge">5</code>.</li>
+              <li><code class="language-plaintext highlighter-rouge">[5, 10]</code> with inclusive lower bound <code class="language-plaintext highlighter-rouge">5</code> and exclusive upper bound <code class="language-plaintext highlighter-rouge">10</code>.</li>
+            </ul>
+            
+            <h3 id="example-2">Example:</h3>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"groupBy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"boundaries"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"default"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"remaining"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$sum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"avg"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$avg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$id"</span><span class="w"> </span><span class="p">}</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bucket"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"groupBy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"boundaries"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"default"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"remaining"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"output"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$sum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"avg"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$avg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$id"</span><span class="w"> </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"routers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$addToSet"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$router"</span><span class="w">  </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"$push"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"$concat"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"$method"</span><span class="p">,</span><span class="w"> </span><span class="s2">" "</span><span class="p">,</span><span class="w"> </span><span class="s2">"$path"</span><span class="w"> </span><span class="p">]</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$status"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bucket"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="bucket-auto"><a href="#pipeline"><strong>Bucket auto</strong></a></h2>
+            
+            <p>Categorizes incoming documents into a specific number of groups, called buckets, based on a specified expression. Bucket boundaries are automatically determined in an attempt to evenly distribute the documents into the specified number of buckets.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>groupBy</td>
+                  <td>Text</td>
+                  <td>An expression to group documents by.</td>
+                </tr>
+                <tr>
+                  <td>buckets</td>
+                  <td>Number</td>
+                  <td>A positive 32-bit integer that specifies the number of buckets into which input documents are grouped.</td>
+                </tr>
+                <tr>
+                  <td>output</td>
+                  <td>Object</td>
+                  <td>Optional. A document that specifies the fields to include in the output documents in addition to the <code class="language-plaintext highlighter-rouge">_id</code> field.</td>
+                </tr>
+                <tr>
+                  <td>granularity</td>
+                  <td>Text</td>
+                  <td>Optional. A string that specifies the <a href="https://en.wikipedia.org/wiki/Preferred_number">preferred number series</a> to use to ensure that the calculated boundary edges end on preferred round numbers or their powers of 10.</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>The suppported values of <code class="language-plaintext highlighter-rouge">granularity</code> are:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">"R5"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"R10"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"R20"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"R40"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"R80"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"1-2-5"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E6"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E12"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E24"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E48"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E96"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"E192"</code></li>
+              <li><code class="language-plaintext highlighter-rouge">"POWERSOF2"</code></li>
+            </ul>
+            
+            <h3 id="example-3">Example:</h3>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"groupBy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"buckets"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$sum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"avg"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"$avg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$id"</span><span class="w"> </span><span class="p">}</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="nl">"granularity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R80"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bucketAuto"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="calculation"><a href="#pipeline"><strong>Calculation</strong></a></h2>
+            
+            <p>This stage has been created in order to be able to create new columns derived from existing columns. Usage could be appending text to text, doing basic calculations or creating categories for numerical records.</p>
+            
+            <p>The different types of calculations are:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">add</code></li>
+              <li><code class="language-plaintext highlighter-rouge">subtract</code></li>
+              <li><code class="language-plaintext highlighter-rouge">divide</code></li>
+              <li><code class="language-plaintext highlighter-rouge">multiply</code></li>
+              <li><code class="language-plaintext highlighter-rouge">abs</code></li>
+              <li><code class="language-plaintext highlighter-rouge">avg</code></li>
+              <li><code class="language-plaintext highlighter-rouge">ceil</code></li>
+              <li><code class="language-plaintext highlighter-rouge">concat</code></li>
+              <li><code class="language-plaintext highlighter-rouge">floor</code></li>
+              <li><code class="language-plaintext highlighter-rouge">log</code> (Usage: [num, base])</li>
+              <li><code class="language-plaintext highlighter-rouge">ltrim</code></li>
+              <li><code class="language-plaintext highlighter-rouge">rtrim</code></li>
+              <li><code class="language-plaintext highlighter-rouge">trim</code></li>
+              <li><code class="language-plaintext highlighter-rouge">max</code></li>
+              <li><code class="language-plaintext highlighter-rouge">mod</code> (modulo)</li>
+              <li><code class="language-plaintext highlighter-rouge">pow</code> (Usage: [num, power])</li>
+              <li><code class="language-plaintext highlighter-rouge">round</code> (Usage: [num, decimals])</li>
+              <li><code class="language-plaintext highlighter-rouge">sum</code></li>
+              <li><code class="language-plaintext highlighter-rouge">sd</code> (Standard Deviation)</li>
+              <li><code class="language-plaintext highlighter-rouge">switch</code></li>
+            </ul>
+            
+            <h3 id="examples">Examples</h3>
+            <p>Single calculation (basic_calculation = $price * 2)</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calculation"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"basic_calculation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"multiply"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"$price"</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <p>Multilayered (multi_calculation = (price + abs(-10)) / 4)</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calculation"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"multi_calculation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"divide"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+                    </span><span class="nl">"add"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"$price"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"abs"</span><span class="p">:</span><span class="w"> </span><span class="mi">-10</span><span class="w">
+                    </span><span class="p">}]</span><span class="w">
+                  </span><span class="p">},</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <p>Switch statement</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calculation"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"segment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"switch"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"if"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+                        </span><span class="nl">"gte"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"$price"</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">]</span><span class="w">
+                      </span><span class="p">}],</span><span class="w">
+                      </span><span class="nl">"then"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Upper"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"default"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"then"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lower"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="convert"><a href="#pipeline"><strong>Convert</strong></a></h2>
+            
+            <p>Converts a value to a specified type.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>input</td>
+                  <td>Text</td>
+                </tr>
+                <tr>
+                  <td>to</td>
+                  <td>Text</td>
+                </tr>
+                <tr>
+                  <td>onError</td>
+                  <td>Text (Optional)</td>
+                </tr>
+                <tr>
+                  <td>onNull</td>
+                  <td>Text (Optional)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>The ‘to’ argument can be any valid expression that resolves to one of the following string identifiers:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">double</code></li>
+              <li><code class="language-plaintext highlighter-rouge">string</code></li>
+              <li><code class="language-plaintext highlighter-rouge">objectId</code></li>
+              <li><code class="language-plaintext highlighter-rouge">bool</code></li>
+              <li><code class="language-plaintext highlighter-rouge">date</code></li>
+              <li><code class="language-plaintext highlighter-rouge">int</code></li>
+              <li><code class="language-plaintext highlighter-rouge">long</code></li>
+              <li><code class="language-plaintext highlighter-rouge">decimal</code></li>
+            </ul>
+            
+            <h4 id="example-4">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"convert"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timestamp"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"onError"</span><span class="p">:</span><span class="w"> </span><span class="s2">"na"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"onNull"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="filters"><a href="#pipeline"><strong>Filters</strong></a></h2>
+            
+            <p>The filters stage’s intended purpose is to query the data and return all matching records. One can i.e. select only country specific data. There is support for AND statements and OR statements on multiple fields. Every expression needs to contain a <code class="language-plaintext highlighter-rouge">type</code> and <code class="language-plaintext highlighter-rouge">value</code>.</p>
+            
+            <p>Different types are:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">eq</code> (Equal to)</li>
+              <li><code class="language-plaintext highlighter-rouge">ne</code> (Not equal to)</li>
+              <li><code class="language-plaintext highlighter-rouge">lt</code> (Less than)</li>
+              <li><code class="language-plaintext highlighter-rouge">lte</code> (Less than or equal to)</li>
+              <li><code class="language-plaintext highlighter-rouge">gt</code> (Greater than)</li>
+              <li><code class="language-plaintext highlighter-rouge">gte</code> (Greater than or equal to)</li>
+            </ul>
+            
+            <h3 id="examples-1">Examples:</h3>
+            <p>Where region equals Nederland and price is greater than 1000</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"regio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eq"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nederland"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">],</span><span class="w">
+                  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gt"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filters"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <p>Where region equals Nederland or Duitsland and price is greater than 1000</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"regio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eq"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nederland"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">],</span><span class="w">
+                  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gt"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"regio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eq"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Duitsland"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">],</span><span class="w">
+                  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gt"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                 </span><span class="p">}</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filters"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            <p>Where region equals Nederland and price is greater than 1000 and less than the market_value</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"regio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eq"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nederland"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">],</span><span class="w">
+                  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gt"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lt"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$market_value"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filters"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            <h2 id="first-from-array"><a href="#pipeline"><strong>First from array</strong></a></h2>
+            <p>Get first element from an array.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object(Where the key is the new name and the value is the old name)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-5">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"firstFromArray"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"new"</span><span class="p">:</span><span class="w"> </span><span class="s2">"old"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="group"><a href="#pipeline"><strong>Group</strong></a></h2>
+            
+            <p>In order to create calculated values over multiple items the group stage exists. In this stage the group keys must be declared together with the calculated keys it must retain. All keys not set here will not be passed down.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>by</td>
+                  <td>List (Keys that together need to form a new unique item, Optional)</td>
+                </tr>
+                <tr>
+                  <td>fields</td>
+                  <td>Object</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>The field needs to get a name, type of calutation and the column on which to perform the calculation.
+            The possible options for the type of fields include:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">sum</code></li>
+              <li><code class="language-plaintext highlighter-rouge">avg</code> (Average/ median)</li>
+              <li><code class="language-plaintext highlighter-rouge">min</code> (Minimum)</li>
+              <li><code class="language-plaintext highlighter-rouge">max</code> (Maximum)</li>
+              <li><code class="language-plaintext highlighter-rouge">sdp</code> (Standard Deviation Population)</li>
+              <li><code class="language-plaintext highlighter-rouge">sds</code> (Standard Deviation Sample)</li>
+              <li><code class="language-plaintext highlighter-rouge">first</code> (First value)</li>
+              <li><code class="language-plaintext highlighter-rouge">last</code> (Last value)</li>
+              <li><code class="language-plaintext highlighter-rouge">list</code></li>
+              <li><code class="language-plaintext highlighter-rouge">ulist</code> (Unique List)</li>
+              <li><code class="language-plaintext highlighter-rouge">count</code> (Total values)</li>
+              <li><code class="language-plaintext highlighter-rouge">ucount</code> (Total of unique values)</li>
+            </ul>
+            
+            <h4 id="example-6">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"group"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"by"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"postcode"</span><span class="p">],</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"total_unique"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ucount"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"house_price"</span><span class="w">
+                  </span><span class="p">},</span><span class="w">
+                  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            <h2 id="hide"><a href="#pipeline"><strong>Hide</strong></a></h2>
+            <p>Removes/excludes fields from documents. (For the inverse, see <a href="#show"><code class="language-plaintext highlighter-rouge">show</code></a>)</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>columns</td>
+                  <td>Array (List containing names of the keys)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-7">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hide"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"listing_photo_urls"</span><span class="p">,</span><span class="w"> </span><span class="s2">"references"</span><span class="p">,</span><span class="w"> </span><span class="s2">"postcode"</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="kpis"><a href="#pipeline"><strong>Kpis</strong></a></h2>
+            
+            <p>In order to create calculated values over all the remaining records the kpis stage exists. In this stage the kpi keys must be declared. All keys not set here will not be passed down.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>The field needs to get a name, type of calutation and the column on which to perform the calculation.
+            The possible options for the type of fields include:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">sum</code></li>
+              <li><code class="language-plaintext highlighter-rouge">avg</code> (Average/ median)</li>
+              <li><code class="language-plaintext highlighter-rouge">min</code> (Minimum)</li>
+              <li><code class="language-plaintext highlighter-rouge">max</code> (Maximum)</li>
+              <li><code class="language-plaintext highlighter-rouge">sdp</code> (Standard Deviation Population)</li>
+              <li><code class="language-plaintext highlighter-rouge">sds</code> (Standard Deviation Sample)</li>
+              <li><code class="language-plaintext highlighter-rouge">first</code> (First value)</li>
+              <li><code class="language-plaintext highlighter-rouge">last</code> (Last value)</li>
+              <li><code class="language-plaintext highlighter-rouge">list</code></li>
+              <li><code class="language-plaintext highlighter-rouge">ulist</code> (Unique List)</li>
+              <li><code class="language-plaintext highlighter-rouge">count</code> (Total values)</li>
+              <li><code class="language-plaintext highlighter-rouge">ucount</code> (Total of unique values)</li>
+            </ul>
+            
+            <h4 id="example-8">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kpis"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"count"</span><span class="p">,</span><span class="w">
+                      </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="left-join"><a href="#pipeline"><strong>Left join</strong></a></h2>
+            
+            <p>This type is intended for joining data from a collection within the same app. This would be used if the data necessary for a table is split up in 2 or more collections (i.e. employee and manager). Below are the possible options to pass to this stage.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>collection</td>
+                  <td>Text</td>
+                </tr>
+                <tr>
+                  <td>how</td>
+                  <td>Text (inner or outer, defaults to inner)</td>
+                </tr>
+                <tr>
+                  <td>left_key</td>
+                  <td>Text (key in the previous stage)</td>
+                </tr>
+                <tr>
+                  <td>right_key</td>
+                  <td>Text (key of the selected collection)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-9">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left join"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"how"</span><span class="p">:</span><span class="w"> </span><span class="s2">"outer"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"collection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1017"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"left_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adress"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"right_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adress"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <p>The “left join” step also accepts “$USER_TABLE” as a collection value. When this identifier is used the system replaces the specified left_key. The right_key must then specify whether the left_key is an ID (integer) or string. For example, the following dataset:</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="w">
+              </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work"</span><span class="p">,</span><span class="w">
+              </span><span class="err">...</span><span class="w">
+              </span><span class="nl">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"j.doe@clappform.com"</span><span class="w">
+            </span><span class="p">}]</span><span class="w">
+            </span></code></pre></div></div>
+            <p>With this query:</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left join"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"collection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$USER_TABLE"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"left_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user_id"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">alt:</span><span class="w"> </span><span class="nl">"left_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user_email"</span><span class="w">
+              </span><span class="nl">"right_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">alt:</span><span class="w"> </span><span class="nl">"right_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"email"</span><span class="w">
+            </span><span class="p">}]</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <p>Returns:</p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="w">
+              </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work"</span><span class="p">,</span><span class="w">
+              </span><span class="err">...</span><span class="w">
+              </span><span class="nl">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"doe"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"j.doe@clappform.com"</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="nl">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"j.doe@clappform.com"</span><span class="w">
+            </span><span class="p">}]</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="limit"><a href="#pipeline"><strong>Limit</strong></a></h2>
+            
+            <p>This type will limit the amount of items passed down to the next stage.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>amount</td>
+                  <td>Number</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h2 id="object-to-array"><a href="#pipeline"><strong>Object to array</strong></a></h2>
+            
+            <p>Converts a object to an array. The return array contains an element for each field/value pair in the original document.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object(Where the key is the new name and the value is the old name)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-10">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"objectToArray"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"new"</span><span class="p">:</span><span class="w"> </span><span class="s2">"old"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="order"><a href="#pipeline"><strong>Order</strong></a></h2>
+            
+            <p>The order stage allows you to order all passed items on multiple fields. The fields object stores two arrays that contain the sorting methods. Each array contains a list of keys that the query will sort on. For example, if the query only needs to sort ascending by ID, then the stage will look like this:</p>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"ASC"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Text (Object containing two arrays)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-11">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"ASC"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span><span class="w"> </span><span class="s2">"province"</span><span class="p">],</span><span class="w">
+                  </span><span class="nl">"DESC"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"municipality"</span><span class="p">]</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="rename"><a href="#pipeline"><strong>Rename</strong></a></h2>
+            
+            <p>This type is used for renaming the keys to pass to the next stage.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Object(Where the key is the new name and the value is the old name)</td>
+                </tr>
+                <tr>
+                  <td>check_for_arrays</td>
+                  <td>Boolean (If renamed object is a array the elements will be concated to a single string)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-12">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rename"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"new"</span><span class="p">:</span><span class="w"> </span><span class="s2">"old"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="show"><a href="#pipeline"><strong>Show</strong></a></h2>
+            
+            <p>This type is used for selecting keys to pass to the next stage. (For the inverse, see <a href="#hide"><code class="language-plaintext highlighter-rouge">hide</code></a>)</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>columns</td>
+                  <td>Array (List containing names of the keys)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-13">Example:</h4>
+            
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"show"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"new_acceptance"</span><span class="p">,</span><span class="w"> </span><span class="s2">"adress"</span><span class="p">,</span><span class="w"> </span><span class="s2">"building_year"</span><span class="p">,</span><span class="w"> </span><span class="s2">"house_price"</span><span class="p">,</span><span class="w"> </span><span class="s2">"postcode"</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="to-date"><a href="#pipeline"><strong>To Date</strong></a></h2>
+            
+            <p>Inverse of toEpoch. Converts an integer timestamp to a data string. Additionally accepts format specifiers to modify the output date string, if ‘format’ is not specified the stage default is “%Y-%m-%d” which outputs as “2022-06-15”. You can also specify the timezone, if ‘timezone’ is not specified the stage default is “Europe/Amsterdam”.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>column</td>
+                  <td>Text</td>
+                </tr>
+                <tr>
+                  <td>format</td>
+                  <td>Text (Optional)</td>
+                </tr>
+                <tr>
+                  <td>timezone</td>
+                  <td>Text (Optional)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h3 id="format-specifiers">Format Specifiers</h3>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Specifiers</th>
+                  <th>Description</th>
+                  <th>Possible Values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>%d</td>
+                  <td>Day of Month (2 digits, zero padded)</td>
+                  <td>01-31</td>
+                </tr>
+                <tr>
+                  <td>%G</td>
+                  <td>Year in ISO 8601 format</td>
+                  <td>0000-9999</td>
+                </tr>
+                <tr>
+                  <td>%H</td>
+                  <td>Hour (2 digits, zero padded, 24-hour clock)</td>
+                  <td>00-23</td>
+                </tr>
+                <tr>
+                  <td>%L</td>
+                  <td>Millisecond (3 digits, zero padded)</td>
+                  <td>000-999</td>
+                </tr>
+                <tr>
+                  <td>%m</td>
+                  <td>Month (2 digits, zero padded)</td>
+                  <td>01-12</td>
+                </tr>
+                <tr>
+                  <td>%M</td>
+                  <td>Minute (2 digits, zero padded)</td>
+                  <td>01-31</td>
+                </tr>
+                <tr>
+                  <td>%S</td>
+                  <td>Second (2 digits, zero padded)</td>
+                  <td>00-60</td>
+                </tr>
+                <tr>
+                  <td>%u</td>
+                  <td>Day of week number in ISO 8601 format (1-Monday, 7-Sunday)</td>
+                  <td>1-7</td>
+                </tr>
+                <tr>
+                  <td>%v</td>
+                  <td>Week of Year in ISO 8601 format</td>
+                  <td>1-53</td>
+                </tr>
+                <tr>
+                  <td>%Y</td>
+                  <td>Year (4 digits, zero padded)</td>
+                  <td>0000-9999</td>
+                </tr>
+                <tr>
+                  <td>%z</td>
+                  <td>The timezone offset from UTC.</td>
+                  <td>+/-[hh][mm]</td>
+                </tr>
+                <tr>
+                  <td>%Z</td>
+                  <td>The minutes offset from UTC as a number. For example, if the timezone offset (+/-[hhmm]) was +0445, the minutes offset is +285.</td>
+                  <td>+/-mmm</td>
+                </tr>
+                <tr>
+                  <td>%%</td>
+                  <td>Percent Character as a Literal</td>
+                  <td>%</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-14">Example:</h4>
+            <p>Format shown below ouputs as <code class="language-plaintext highlighter-rouge">2022-06-15 11:06:52</code></p>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toDate"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"datestring"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%Y-%m-%d %H:%M:%S"</span><span class="p">,</span><span class="w"> 
+              </span><span class="nl">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe/Amsterdam"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="to-epoch"><a href="#pipeline"><strong>To Epoch</strong></a></h2>
+            
+            <p>Converts key to epoch timestamp. This stage expects a datestring as input and returns epoch timestamp.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>column</td>
+                  <td>Text</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-15">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toEpoch"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"datestring"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h2 id="union-with"><a href="#pipeline"><strong>Union With</strong></a></h2>
+            
+            <p>Performs a union of two collections; i.e. ‘union with’ combines results from two collections into a single result set.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>collection</td>
+                  <td>Text (Collection slug)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-16">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unionWith"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"collection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"feedback_resultaten"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            <p>This could result in duplicates, to remove duplicates you can use the ‘group’ stage type.</p>
+            
+            <h4 id="example-17">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unionWith"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"collection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"collection1"</span><span class="w">
+            </span><span class="p">}</span><span class="err">,</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"group"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"by"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"email"</span><span class="p">],</span><span class="w">
+            </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"column"</span><span class="p">:</span><span class="w"> </span><span class="s2">"email"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            
+            </span></code></pre></div></div>
+            
+            <h2 id="unwind"><a href="#pipeline"><strong>Unwind</strong></a></h2>
+            
+            <p>Deconstructs an array field from the input documents to output a document for each element. Each output document is the input document with the value of the array field replaced by the element.</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fields</td>
+                  <td>Array (List containing names of the keys)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 id="example-18">Example:</h4>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unwind"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"feedback_resultaten"</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            <h1 id="questionnaire">Questionnaire</h1>
+            <p>To configure the relevant questionnaire for the user, you can write a query in order determine which data will be loaded in the questionnaire. If you don’t confiugure a query please be aware it will always parse in data if the collection has data. Making a questionnaire user specific, or other condition use the query options in order to fulfill your goal.</p>
+            
+            <h1 id="explanation">Explanation</h1>
+            <p>In several places of the widget configuration you have the possibility to provide your own text using a WYSIWYG. It is possible to parse in data from the query into your text. In every case only the first item of the query result is accessible. Let’s say you want to parse in the address in your text, you need to do the following:</p>
+            
+            <h2 id="example-19">Example:</h2>
+            
+            <figure class="highlight"><pre><code class="language-html" data-lang="html">{{templateData.key}}</code></pre></figure>
+            
+            <p>It is also possible to parse in user data. The items which can be shown are:</p>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">email</code></li>
+              <li><code class="language-plaintext highlighter-rouge">first_name</code> (Average/ median)</li>
+              <li><code class="language-plaintext highlighter-rouge">last_name</code> (Minimum)</li>
+            </ul>
+            
+            <p>You can use this data in the WYSIWYG:</p>
+            
+            <h2 id="example-20">Example:</h2>
+            
+            <figure class="highlight"><pre><code class="language-html" data-lang="html">{{user.key}}</code></pre></figure>
+            
+            <h1 id="html-data-table-single-value-list">HTML (Data Table, Single Value, List)</h1>
+            <p>It is possible to customize the data table, single value widget and list overview. In order to accomplish this, you need to specify the HTML and CSS. The HTML follows the HTML and Vue JS directives. The css mist be specified by making a JSON setting. You need to configure both. If you want to use data from the query result it is possible. The data is stored inside an object. It can be accessed by using the data in your HTML</p>
+            
+            <h2 id="example-html">Example (HTML):</h2>
+            <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">:style=</span><span class="s">"css.testen"</span><span class="nt">&gt;</span>
+            testeten
+            <span class="nt">&lt;/div&gt;</span>
+            </code></pre></div></div>
+            
+            <h2 id="example-21">Example:</h2>
+            
+            <figure class="highlight"><pre><code class="language-html" data-lang="html">{{data.key}}</code></pre></figure>
+            
+            <h2 id="example-ccs">Example (CCS):</h2>
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+              </span><span class="nl">"testen"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"color"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"font-size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"40px"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span></code></pre></div></div>
+            
+            
+                  <footer class="site-footer">
+                    
+                    <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+                  </footer>
+                </main>
+              
+            
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="primary.js"></script>
+</html>
+
+
