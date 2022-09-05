@@ -38,7 +38,7 @@ body {
 }
 
 header { 
-	background: url("docs/Assets/header.jpg") no-repeat;
+	background: url("https://github.com/bharkema/bharkema.github.io/blob/main/docs/Assets/header.jpg") no-repeat;
 	padding-top: 10%;
 	background-size: cover;
 }
