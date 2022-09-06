@@ -16,15 +16,11 @@
 
         <div class="section-wrap">
             <div class="section">    
-            <button type="link" class="button" onclick="nextPage('index.html')">Go go back <-</button>
+            <button type="link" class="button" onclick="nextPage('index.html')">Go back <-</button>
             <h1 id="query">Query</h1>
-            
             <p>The query editor is meant to create a pipeline that transforms data at the latest possible stage before presentation. This means it is intended for selecting only the data necessary for creating a widget. Some types have the query disabled as the widget doesn’t need any input data. Only the developer needs rights to certain data in order to put it in the pipeline. The data will not be user specific and therefore not adhere to any set permissions.</p>
-            
             <h1 id="pipeline">Pipeline</h1>
-            
             <p>The top layer of the query editor consists of the stages together forming the pipeline. These stages can be used in any quantity and order, but caution is advised for the sake of time-to-live of the widget. At the start of the pipeline the data will be passed down of the collection selected in the form. The data for the last stage will be passed down to the widget and can then be configured in the widget configuration. The last stage will always be limited to 100 items maximum to guarantee performance. The stages can have multiple different types:</p>
-            
             <ul>
               <li><a href="#add-field"><code class="language-plaintext highlighter-rouge">add field</code></a></li>
               <li><a href="#array-to-object"><code class="language-plaintext highlighter-rouge">array to object</code></a></li>
